@@ -5,12 +5,13 @@ namespace Net021
 {
     public class Author
     {
+        private const int NameLenght = 200;
         private string FirstName
         {
             get { return FirstName; }
             set
             {
-                if (FirstName != null || FirstName.Length <= 200)
+                if (FirstName != null || FirstName.Length <= NameLenght)
                 {
                     FirstName = value;
                 }
@@ -21,7 +22,7 @@ namespace Net021
             get { return LastName; }
             set
             {
-                if (LastName != null || LastName.Length <= 200)
+                if (LastName != null || LastName.Length <= NameLenght)
                 {
                     LastName = value;
                 }
