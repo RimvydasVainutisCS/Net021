@@ -1,39 +1,68 @@
 ﻿// Book(s) properties:
-// ISBN; string; Forms: "XXX-X-XX-XXXXX-X" or "XXXXXXXXXXXX" where X is a digit 0..9.
+// ISBN; string; Forms: "XXX-X-XX-XXXXXX-X" or "XXXXXXXXXXXXX" where X is a digit 0..9.
 // Title of the book; non empty string, limited to 1000 chars.
 // Publication date of the book; possibly empty/not set;
 // Colletion of book Author(s); possibly empty;
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Net021
 {
     public class Book
     {
-        private const int TitleLenght = 1000;
+        // Variable
+        private string _title;
+        private const int TITLE_LENGHT = 1000;
+        private readonly Regex _regex = new Regex(@"\d+\-*");
+        private string _isbn;
+        public List<Author> Authors;
+        private DateTime _publishDate;
 
-        public string ISBN { get; set; }
-
-        private DateTime PublishDate;
-
-        private List<Author> Authors {get; set;}
-
-        private string Title
+        //Constructor
+        // finish constructor with exceptions
+        public Book(string isbn, DateTime publishDate, string title, List<Author> authors)
         {
-            get { return Title; }
+            if(_regex.IsMatch(isbn))
+            {
+            _isbn = isbn;
+            }
+            _publishDate = publishDate;
+            _title = title;
+            Authors = authors;
+        }
+
+        public string ISBN
+        {
+            get { return _isbn; }
+
             set
             {
-                if (Title != null || Title.Length <= TitleLenght)
+                if (_regex.IsMatch(value))
                 {
-                    Title = value;
+                    _isbn = value;
+                }
+                else
+                {
+                    throw new Exception("Please, enter correct ISBN!");
                 }
             }
         }
-
-        //public void SetAuthors(string name, string surname)
-        //{
-        //    authors.Add(name, surname);
-        //}
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                if (_title != null || _title.Length <= TITLE_LENGHT)
+                {
+                    _title = value;
+                }
+                else
+                    throw new ArgumentException();
+            }
+        }
+        //overrirde getHash
+        public override bool Equals(object obj) => obj is Book && ISBN.Equals(((Book)obj).ISBN);
     }
 }

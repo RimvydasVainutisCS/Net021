@@ -1,12 +1,13 @@
 ﻿// Catalog contains Book(s); dictionary-like collection;
 // We must access any book by string key (book ISBN).
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Net021
 {
-    public class Catalog
+    public class Catalog : IEnumerable
     {
         private List<Book> Books { get; set; }
 
@@ -26,10 +27,14 @@ namespace Net021
             //    return null;
             //}
 
+            set => Books.Where(x => x.ISBN != isbn).Equals(value);
+        }
 
-            set
+        public IEnumerator GetEnumerator()
+        {
+            foreach (var b in Books)
             {
-
+                yield return b.Title;
             }
         }
     }

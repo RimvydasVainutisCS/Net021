@@ -28,8 +28,8 @@ namespace Net021
                 }
             }
         }
-
-        public void SetAuthor(string firstName, string lastName)
+        // Constructor
+        public Author(string firstName, string lastName)
         {
             FirstName = firstName;
             LastName = lastName;
