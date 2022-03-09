@@ -6,63 +6,67 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Net021
 {
-    public class Book
+    public class Book : IEquatable<Book>
     {
         // Variable
         private string _title;
         private const int TITLE_LENGHT = 1000;
-        private readonly Regex _regex = new Regex(@"\d+\-*");
+        private readonly Regex _regex1 = new Regex(@"\d{3}\-\d{1}\-\d{2}\-\d{6}\-\d{1}");
+        private readonly Regex _regex2 = new Regex(@"\d{13}");
         private string _isbn;
         public List<Author> Authors;
-        private DateTime _publishDate;
+        // ? == nullable
+        private DateTime? _publishDate;
 
         //Constructor
         // finish constructor with exceptions
-        public Book(string isbn, DateTime publishDate, string title, List<Author> authors)
+        public Book(string isbn, DateTime? publishDate, string title, List<Author> authors)
         {
-            if(_regex.IsMatch(isbn))
+            if (_regex1.IsMatch(isbn) || _regex2.IsMatch(isbn))
             {
-            _isbn = isbn;
+                _isbn = isbn;
             }
+            else
+            {
+                throw new ArgumentException();
+            }
+
             _publishDate = publishDate;
-            _title = title;
+
+            if (title != null && title.Length <= TITLE_LENGHT)
+            {
+                _title = title;
+            }
+            else
+                throw new ArgumentException();
+
             Authors = authors;
         }
 
-        public string ISBN
-        {
-            get { return _isbn; }
+        public string ISBN { get { return _isbn; } }
 
-            set
-            {
-                if (_regex.IsMatch(value))
-                {
-                    _isbn = value;
-                }
-                else
-                {
-                    throw new Exception("Please, enter correct ISBN!");
-                }
-            }
-        }
-        public string Title
+        public string Title { get { return _title; } }
+
+        public DateTime? PublishDate { get { return _publishDate; } }
+
+        // Compiler suggesting this alternative:        
+        public override bool Equals(object obj) => obj is Book other && Equals(other);
+
+        public override int GetHashCode() => ISBN.GetHashCode();
+
+        public bool Equals(Book other)
         {
-            get { return _title; }
-            set
-            {
-                if (_title != null || _title.Length <= TITLE_LENGHT)
-                {
-                    _title = value;
-                }
-                else
-                    throw new ArgumentException();
-            }
+            return ISBN.Equals(other.ISBN);
         }
-        //overrirde getHash
-        public override bool Equals(object obj) => obj is Book && ISBN.Equals(((Book)obj).ISBN);
+
+        public bool HasAuthor(string firstName, string lastName)
+        {
+            return Authors.Any(author => author.FirstName == firstName && author.LastName == lastName);
+        }
     }
 }
