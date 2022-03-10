@@ -14,14 +14,14 @@ namespace Net021
     public class Book : IEquatable<Book>
     {
         // Variable
-        private string _title;
+        private readonly string _title;
         private const int TITLE_LENGHT = 1000;
         private readonly Regex _regex1 = new Regex(@"\d{3}\-\d{1}\-\d{2}\-\d{6}\-\d{1}");
         private readonly Regex _regex2 = new Regex(@"\d{13}");
-        private string _isbn;
+        private readonly string _isbn;
         public List<Author> Authors;
         // ? == nullable
-        private DateTime? _publishDate;
+        private readonly DateTime? _publishDate;
 
         //Constructor
         // finish constructor with exceptions

@@ -9,7 +9,7 @@ namespace Net021
 {
     public class Catalog : IEnumerable
     {
-        private List<Book> _books;
+        private readonly List<Book> _books;
 
         public Catalog()
         {
