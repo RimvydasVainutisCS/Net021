@@ -32,9 +32,9 @@ namespace Net021
 
             var allBooks = myCatalog.Books;
             var allAuthors = allBooks.SelectMany(book => book.Authors).Distinct();
-            var authorTuples = allAuthors.Select(author => 
+            var authorTuples = allAuthors.Select(author =>
                 new Tuple<Author, int>(
-                    author, 
+                    author,
                     myCatalog.GetBooksByAuthor(author.FirstName, author.LastName).Count()));
 
             foreach (var author in allAuthors)

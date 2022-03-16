@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Net021;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace TestProject1
 {
@@ -26,16 +25,25 @@ namespace TestProject1
         }
 
         [TestMethod]
-        public void TestBookIsbnFormat()
+        public void TestBookIsbnFormatOne()
         {
-            //private readonly Regex _regex1 = new Regex(@"\d{3}\-\d{1}\-\d{2}\-\d{6}\-\d{1}");
-            //private readonly Regex _regex2 = new Regex(@"\d{13}");
             Author authorOne = new("Mad", "Max");
             Book bookOne = new("1234567890123",
                 DateTime.Now,
                 "Inception",
                 new List<Author> { authorOne });
             Assert.AreEqual("1234567890123", bookOne.ISBN);
+        }
+
+        [TestMethod]
+        public void TestBookIsbnFormatTwo()
+        {
+            Author authorOne = new("Mad", "Max");
+            Book bookOne = new("123-4-56-789012-3",
+                DateTime.Now,
+                "Inception",
+                new List<Author> { authorOne });
+            Assert.AreEqual("123-4-56-789012-3", bookOne.ISBN);
         }
     }
 }
